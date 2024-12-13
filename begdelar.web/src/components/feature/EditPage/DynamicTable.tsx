@@ -10,7 +10,7 @@ function DynamicTable<T>(props: TableProps<T>) {
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
-  const [dateRange, setDateRange] = useState<[string, string]>(['20-01-01', new Date().toISOString().slice(0, 10)]);
+  const [dateRange, setDateRange] = useState<[string, string]>(['2019-01-01', new Date().toISOString().slice(0, 10)]);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (data.length === 0) {
@@ -21,28 +21,31 @@ function DynamicTable<T>(props: TableProps<T>) {
   const headers = Object.keys(data[0]) as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
-    return dateStr >= dateRange[0].replace(/-/g, '') && dateStr <= dateRange[1].replace(/-/g, '');
+    return dateStr >= dateRange[0] && dateStr <= dateRange[1];
   };
 
-  const filteredData = data.filter(row =>
-    headers.some(header => {
-      const cellValue = String(row[header]).toLowerCase();
-      const matchesSearch = cellValue.includes(searchTerm.toLowerCase());
-      const matchesDateRange = isDateInRange(cellValue);
-      return matchesSearch && matchesDateRange;
-    })
-  );
+  const applyFilters = () => {
+    const searchFilteredData = data.filter(row =>
+      headers.some(header => String(row[header]).toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    const dateFilteredData = searchFilteredData.filter(row =>
+      headers.some(header => isDateInRange(String(row[header])))
+    );
+
+    return dateFilteredData;
+  };
 
   useEffect(() => {
-    setVisibleRows(filteredData.slice(0, rowsToShow));
-  }, [filteredData, rowsToShow]);
+    setVisibleRows(applyFilters().slice(0, rowsToShow));
+  }, [searchTerm, dateRange, rowsToShow, data]);
 
   const handleScroll = () => {
     const container = tableContainerRef.current;
     if (container) {
       const { scrollTop, scrollHeight, clientHeight } = container;
-      if (scrollTop + clientHeight >= scrollHeight - 10 && rowsToShow < filteredData.length) {
-        setRowsToShow(prev => Math.min(prev + 50, filteredData.length));
+      if (scrollTop + clientHeight >= scrollHeight - 10 && rowsToShow < applyFilters().length) {
+        setRowsToShow(prev => Math.min(prev + 50, applyFilters().length));
       }
     }
   };
@@ -53,7 +56,7 @@ function DynamicTable<T>(props: TableProps<T>) {
       container.addEventListener('scroll', handleScroll);
     }
     return () => container?.removeEventListener('scroll', handleScroll);
-  }, [filteredData.length, rowsToShow]);
+  }, [applyFilters().length, rowsToShow]);
 
   return (
     <div className="table-wrapper">
