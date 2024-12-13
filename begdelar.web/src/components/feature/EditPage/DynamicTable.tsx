@@ -10,6 +10,7 @@ function DynamicTable<T>(props: TableProps<T>) {
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
+  const [dateRange, setDateRange] = useState<[string, string]>(['20-01-01', new Date().toISOString().slice(0, 10)]);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (data.length === 0) {
@@ -19,10 +20,17 @@ function DynamicTable<T>(props: TableProps<T>) {
   //@ts-ignore
   const headers = Object.keys(data[0]) as (keyof T)[];
 
+  const isDateInRange = (dateStr: string): boolean => {
+    return dateStr >= dateRange[0].replace(/-/g, '') && dateStr <= dateRange[1].replace(/-/g, '');
+  };
+
   const filteredData = data.filter(row =>
-    headers.some(header =>
-      String(row[header]).toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    headers.some(header => {
+      const cellValue = String(row[header]).toLowerCase();
+      const matchesSearch = cellValue.includes(searchTerm.toLowerCase());
+      const matchesDateRange = isDateInRange(cellValue);
+      return matchesSearch && matchesDateRange;
+    })
   );
 
   useEffect(() => {
@@ -59,6 +67,29 @@ function DynamicTable<T>(props: TableProps<T>) {
         }}
         className="search-bar"
       />
+      <div className="date-range-slider">
+        <label>Datumintervall:</label>
+        <div className="selected-dates">
+          <span>Från: {dateRange[0]}</span>
+          <span>Till: {dateRange[1]}</span>
+        </div>
+        <input
+          type="date"
+          min="2019-01-01"
+          max="2030-01-01"
+          value={dateRange[0]}
+          onChange={(e) => setDateRange([e.target.value, dateRange[1]])}
+          className="date-input"
+        />
+        <input
+          type="date"
+          min="2019-01-01"
+          max="2030-01-01"
+          value={dateRange[1]}
+          onChange={(e) => setDateRange([dateRange[0], e.target.value])}
+          className="date-input"
+        />
+      </div>
       <div ref={tableContainerRef} className="table-container" style={{ height: '95vh', overflowY: 'auto' }}>
         <table className="table">
           <thead>
