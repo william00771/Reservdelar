@@ -10,7 +10,7 @@ function DynamicTable<T>(props: TableProps<T>) {
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
-  const [dateRange, setDateRange] = useState<[string, string]>(['2019-01-01', new Date().toISOString().slice(0, 10)]);
+  const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', new Date().toISOString().slice(0, 10)]);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (data.length === 0) {
@@ -60,6 +60,7 @@ function DynamicTable<T>(props: TableProps<T>) {
 
   return (
     <div className="table-wrapper">
+      <div className="menu-wrapper">
       <input
         type="text"
         placeholder="Sök..."
@@ -70,12 +71,8 @@ function DynamicTable<T>(props: TableProps<T>) {
         }}
         className="search-bar"
       />
-      <div className="date-range-slider">
-        <label>Datumintervall:</label>
-        <div className="selected-dates">
-          <span>Från: {dateRange[0]}</span>
-          <span>Till: {dateRange[1]}</span>
-        </div>
+        {/* <span>Från: {dateRange[0]}</span> */}
+        {/* <span>Till: {dateRange[1]}</span> */}
         <input
           type="date"
           min="2019-01-01"

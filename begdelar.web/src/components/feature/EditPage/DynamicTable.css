@@ -1,3 +1,8 @@
+.menu-wrapper{
+    display: flex;
+    margin: 2rem 2rem;
+}
+
 .table-container {
     width: 100%;
     overflow-x: auto;
@@ -20,10 +25,16 @@
     background-color: #f4f4f4;
   }
   
-  .search-bar {
+  .filters {
+    display: flex;
+    align-items: center;
+    margin: 2rem 4rem 1rem 4rem;
+    gap: 1rem;
+  }
+  
+  .search-bar, .date-input {
     width: 20%;
     padding: 0.5rem 1rem;
-    margin: 2rem 0 1rem 4rem;
     font-size: calc(0.5em + 0.5vw);
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -31,15 +42,15 @@
     transition: all 0.3s ease;
   }
   
-  .search-bar:focus {
+  .search-bar:focus, .date-input:focus {
     border-color: #0019d7;
     box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
   }
-  
+
   .table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
   }
   
   .table tbody tr:hover {
     background-color: #eaeaea;
-  }  
+  }
