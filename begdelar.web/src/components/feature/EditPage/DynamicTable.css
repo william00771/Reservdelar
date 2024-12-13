@@ -1,0 +1,22 @@
+.table-container {
+    padding: 2rem 0rem;
+    width: 100%;
+    overflow-x: auto;
+    font-size: .2rem;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ccc;
+    padding: 2px;
+    text-align: left;
+    font-size: calc(0.8em + 0.5vw);
+  }
+  
+  .table th {
+    background-color: #f4f4f4;
+  }

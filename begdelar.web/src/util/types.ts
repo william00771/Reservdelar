@@ -25,4 +25,5 @@ export type UPricefileManual = {
     DiscountCode?: LimitedString<string, 1>;
   };  
 
-type LimitedString<T extends string, L extends number> = T & { __maxLength: L };
+// type LimitedString<T extends string, L extends number> = T & { __maxLength: L };
+type LimitedString<T extends string, L extends number> = T & { __brand?: `Limited${L}` };
