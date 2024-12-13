@@ -90,7 +90,7 @@ function DynamicTable<T>(props: TableProps<T>) {
           className="date-input"
         />
       </div>
-      <div ref={tableContainerRef} className="table-container" style={{ height: '95vh', overflowY: 'auto' }}>
+      <div ref={tableContainerRef} className="table-container" style={{ height: '82vh', overflowY: 'auto' }}>
         <table className="table">
           <thead>
             <tr>
