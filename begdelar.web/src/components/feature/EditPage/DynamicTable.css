@@ -1,4 +1,4 @@
-.menu-wrapper{
+.menu-wrapper {
     display: flex;
     margin: 2rem 2rem;
 }
@@ -7,32 +7,46 @@
     width: 100%;
     overflow-x: auto;
     font-size: 0.2rem;
-  }
-  
-  .table {
+}
+
+.table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  .table th, .table td {
+}
+
+.table th, .table td {
     border: 1px solid #ccc;
     padding: 2px;
     text-align: left;
     font-size: calc(0.8em + 0.5vw);
-  }
-  
-  .table th {
+    height: 100%;
+    position: relative;
+}
+
+.table th {
     background-color: #f4f4f4;
-  }
-  
-  .filters {
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #eaeaea;
+}
+
+.table tbody tr{
+    cursor: text;
+}
+
+.filters {
     display: flex;
     align-items: center;
     margin: 2rem 4rem 1rem 4rem;
     gap: 1rem;
-  }
-  
-  .search-bar, .date-input {
+}
+
+.search-bar, .date-input {
     width: 20%;
     padding: 0.5rem 1rem;
     font-size: calc(0.5em + 0.5vw);
@@ -40,17 +54,45 @@
     border-radius: 4px;
     outline: none;
     transition: all 0.3s ease;
-  }
-  
-  .search-bar:focus, .date-input:focus {
+}
+
+.search-bar:focus, .date-input:focus {
     border-color: #0019d7;
     box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
-  }
+}
 
-  .table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .table tbody tr:hover {
+.table-input {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    font-size: inherit;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    box-sizing: border-box;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.table-input:focus {
+    border: 1px solid #0019d7;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
+}
+
+.table button {
+    padding: 4px 8px;
+    font-size: inherit;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.table button:hover {
     background-color: #eaeaea;
-  }
+}

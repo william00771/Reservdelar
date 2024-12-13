@@ -11,6 +11,8 @@ function DynamicTable<T>(props: TableProps<T>) {
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
   const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', new Date().toISOString().slice(0, 10)]);
+  const [editCell, setEditCell] = useState<{ rowIndex: number; colKey: keyof T } | null>(null);
+  const [editedValue, setEditedValue] = useState<string>('');
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (data.length === 0) {
@@ -21,7 +23,7 @@ function DynamicTable<T>(props: TableProps<T>) {
   const headers = Object.keys(data[0]) as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
-    return dateStr >= dateRange[0] && dateStr <= dateRange[1];
+    return dateStr >= dateRange[0] && dateRange[1] >= dateStr;
   };
 
   const applyFilters = () => {
@@ -58,21 +60,44 @@ function DynamicTable<T>(props: TableProps<T>) {
     return () => container?.removeEventListener('scroll', handleScroll);
   }, [applyFilters().length, rowsToShow]);
 
+  const handleCellClick = (rowIndex: number, colKey: keyof T, currentValue: string) => {
+    setEditCell({ rowIndex, colKey });
+    setEditedValue(currentValue);
+  };
+
+  const handleInputChange = (value: string) => {
+    setEditedValue(value);
+  };
+
+  const applyEdit = () => {
+    if (editCell) {
+      const updatedData = [...data];
+      updatedData[editCell.rowIndex][editCell.colKey] = editedValue as T[keyof T];
+      setEditCell(null);
+      setVisibleRows(applyFilters().slice(0, rowsToShow));
+      console.log("Updated Row:", updatedData[editCell.rowIndex]);
+    }
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      applyEdit();
+    }
+  };
+
   return (
     <div className="table-wrapper">
       <div className="menu-wrapper">
-      <input
-        type="text"
-        placeholder="Sök..."
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-          setRowsToShow(50);
-        }}
-        className="search-bar"
-      />
-        {/* <span>Från: {dateRange[0]}</span> */}
-        {/* <span>Till: {dateRange[1]}</span> */}
+        <input
+          type="text"
+          placeholder="Sök..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setRowsToShow(50);
+          }}
+          className="search-bar"
+        />
         <input
           type="date"
           min="2019-01-01"
@@ -95,18 +120,28 @@ function DynamicTable<T>(props: TableProps<T>) {
           <thead>
             <tr>
               {headers.map((header) => (
-                <th key={String(header)}>
-                  {String(header)}
-                </th>
+                <th key={String(header)}>{String(header)}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {visibleRows.map((row, index) => (
-              <tr key={index}>
+            {visibleRows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
                 {headers.map((header) => (
-                  <td key={String(header)}>
-                    {row[header] as React.ReactNode}
+                  <td key={String(header)} onClick={() => handleCellClick(rowIndex, header, String(row[header]))}>
+                    {editCell?.rowIndex === rowIndex && editCell?.colKey === header ? (
+                      <input
+                        className="table-input"
+                        type="text"
+                        value={editedValue}
+                        onChange={(e) => handleInputChange(e.target.value)}
+                        onKeyDown={handleInputKeyDown}
+                        onBlur={applyEdit}
+                        autoFocus
+                      />
+                    ) : (
+                      row[header] as React.ReactNode
+                    )}
                   </td>
                 ))}
               </tr>
