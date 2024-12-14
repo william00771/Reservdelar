@@ -5,6 +5,15 @@
 
 # dotenv files
 .env
+*.vsidx
+
+# Ignore Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.vsidx
+*.VC.db
+.vs/
 
 # User-specific files
 *.rsuser
