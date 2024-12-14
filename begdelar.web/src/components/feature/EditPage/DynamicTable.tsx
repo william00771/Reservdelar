@@ -13,27 +13,31 @@ type TableProps<T, V> = {
 
 function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: TableProps<T, V>) {
   const { data, validationRules } = props;
+  const [currentData, setCurrentData] = useState<T[]>([...data]);
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
-  const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', new Date().toISOString().slice(0, 10)]);
+  const [dateRange, setDateRange] = useState<[string, string]>([
+    '2017-01-01',
+    new Date().toISOString().slice(0, 10),
+  ]);
   const [editCell, setEditCell] = useState<{ rowIndex: number; colKey: keyof T } | null>(null);
   const [editedValue, setEditedValue] = useState<string>('');
   const [editedRows, setEditedRows] = useState<Set<number>>(new Set());
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  if (data.length === 0) {
+  if (currentData.length === 0) {
     return <p>Datafel</p>;
   }
 
-  const headers = Object.keys(data[0]) as (keyof T)[];
+  const headers = Object.keys(currentData[0]) as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
     return dateStr >= dateRange[0] && dateRange[1] >= dateStr;
   };
 
   const applyFilters = () => {
-    const searchFilteredData = data.filter(row =>
+    const searchFilteredData = currentData.filter(row =>
       headers.some(header => String(row[header]).toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
@@ -46,7 +50,7 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
 
   useEffect(() => {
     setVisibleRows(applyFilters().slice(0, rowsToShow));
-  }, [searchTerm, dateRange, rowsToShow, data]);
+  }, [searchTerm, dateRange, rowsToShow, currentData]);
 
   const handleScroll = () => {
     const container = tableContainerRef.current;
@@ -87,9 +91,10 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
   };
 
   const applyEdit = () => {
-    if (editCell && editedValue !== String(data[editCell.rowIndex][editCell.colKey])) {
-      const updatedData = [...data];
+    if (editCell && editedValue !== String(currentData[editCell.rowIndex][editCell.colKey])) {
+      const updatedData = [...currentData];
       updatedData[editCell.rowIndex][editCell.colKey] = editedValue as T[keyof T];
+      setCurrentData(updatedData);
       setEditCell(null);
 
       setEditedRows(prev => {
@@ -108,6 +113,14 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
     if (e.key === 'Enter') {
       applyEdit();
     }
+  };
+
+  const handleUndoChanges = () => {
+    window.location.reload();
+  };
+
+  const handleSaveChanges = () => {
+    alert('Ändringar sparade');
   };
 
   return (
@@ -139,6 +152,8 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
           onChange={(e) => setDateRange([dateRange[0], e.target.value])}
           className="date-input"
         />
+        <button onClick={handleUndoChanges} className="action-button">Ångra ändringar</button>
+        <button onClick={handleSaveChanges} className="action-button">Spara ändringar</button>
       </div>
       <div ref={tableContainerRef} className="table-container" style={{ height: '82vh', overflowY: 'auto' }}>
         <table className="table">
@@ -151,15 +166,9 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
           </thead>
           <tbody>
             {visibleRows.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={editedRows.has(rowIndex) ? 'edited-row' : ''}
-              >
+              <tr key={rowIndex} className={editedRows.has(rowIndex) ? 'edited-row' : ''}>
                 {headers.map((header) => (
-                  <td
-                    key={String(header)}
-                    onClick={() => handleCellClick(rowIndex, header, String(row[header]))}
-                  >
+                  <td key={String(header)} onClick={() => handleCellClick(rowIndex, header, String(row[header]))}>
                     {editCell?.rowIndex === rowIndex && editCell?.colKey === header ? (
                       <input
                         className="table-input"

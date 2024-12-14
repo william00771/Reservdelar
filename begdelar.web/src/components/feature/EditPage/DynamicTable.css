@@ -1,6 +1,8 @@
 .menu-wrapper {
     display: flex;
     margin: 2rem 2rem;
+    gap: 1rem;
+    align-items: center;
 }
 
 .table tbody tr.edited-row {
@@ -39,7 +41,7 @@
     background-color: #eaeaea;
 }
 
-.table tbody tr{
+.table tbody tr {
     cursor: text;
 }
 
@@ -50,7 +52,7 @@
     gap: 1rem;
 }
 
-.search-bar, .date-input {
+.search-bar, .date-input, .action-button {
     width: 20%;
     padding: 0.5rem 1rem;
     font-size: calc(0.5em + 0.5vw);
@@ -58,11 +60,21 @@
     border-radius: 4px;
     outline: none;
     transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
 }
 
-.search-bar:focus, .date-input:focus {
+.search-bar:focus, .date-input:focus, .action-button:focus {
     border-color: #0019d7;
     box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
+}
+
+.action-button {
+    background-color: #f4f4f4;
+}
+
+.action-button:hover {
+    background-color: #eaeaea;
 }
 
 .table-input {
