@@ -68,7 +68,7 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
 
   const handleCellClick = (rowIndex: number, colKey: keyof T, currentValue: string) => {
     setEditCell({ rowIndex, colKey });
-    setEditedValue(currentValue);
+    setEditedValue(currentValue || '');
   };
 
   const handleInputChange = (value: string) => {
@@ -171,7 +171,7 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
                         autoFocus
                       />
                     ) : (
-                      row[header] as React.ReactNode
+                      String(row[header]) || <span className="placeholder">NULL</span>
                     )}
                   </td>
                 ))}
