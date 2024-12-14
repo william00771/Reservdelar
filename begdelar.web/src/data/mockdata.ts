@@ -79,7 +79,7 @@ export const UPricefileManualMockData: UPricefileManual[] = [
     validFrom: '20201030',
     DiscountCode: '1',
   },
-  ...Array.from({ length: 1500 }, (_, i) => ({
+  ...Array.from({ length: 3200 }, (_, i) => ({
     Artnr: `950-ITEM-${i + 1000}`,
     descrEng: `ITEM-DESC-${i + 1}`,
     Retail: `${(i + 1) * 500}`,
