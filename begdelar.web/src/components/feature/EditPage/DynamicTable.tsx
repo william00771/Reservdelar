@@ -151,7 +151,7 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
         <button onClick={handleUndoChanges} className="action-button">Ångra ändringar</button>
         <button onClick={handleSaveChanges} className="action-button">Spara ändringar</button>
       </div>
-      <div ref={tableContainerRef} className="table-container" style={{ height: '82vh', overflowY: 'auto' }}>
+      <div ref={tableContainerRef} className="table-container" style={{ height: '75.2vh', overflowY: 'auto' }}>
         <table className="table">
           <thead>
             <tr>

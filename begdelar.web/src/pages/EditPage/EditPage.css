@@ -1,0 +1,31 @@
+.editpage-header{
+    background-color: var(--primary-normal);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem 0rem 2rem;
+}
+.editpage-titlesection{
+    display: flex;
+    align-items: center;
+}
+    .editpage-titlesection .scaniaWordMark{
+        height: 22px;
+        width: 135px;
+    }
+    .editpage-titlesection h1{
+        font-size: calc(0.2em + 0.5vw);
+        padding-left: 10px;
+        margin-left: .7rem;
+        margin-top: .2rem;
+        letter-spacing: 0;
+        color: #fff;
+        border-left: 1px solid var(--primary-light);
+        text-transform: uppercase;
+        opacity: .6;
+        font-weight: 400;
+    }
+.editpage-header .scaniaLogo{
+    height: 32px;
+    width: 40px;
+}
