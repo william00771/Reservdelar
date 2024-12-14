@@ -189,6 +189,7 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
           </tbody>
         </table>
       </div>
+      <div className="status-bar">{currentData.length.toLocaleString('sv-SE')} rader</div>
     </div>
   );
 }

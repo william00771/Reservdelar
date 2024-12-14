@@ -112,3 +112,12 @@
 .table button:hover {
     background-color: #eaeaea;
 }
+
+.status-bar {
+    position: absolute;
+    bottom: .7rem;
+    right: 2rem;
+    font-size: calc(0.5em + 0.5vw);
+    color: #555;
+    font-weight: bold;
+}
