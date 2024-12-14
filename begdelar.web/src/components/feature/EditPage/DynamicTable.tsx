@@ -13,13 +13,13 @@ function DynamicTable<T>(props: TableProps<T>) {
   const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', new Date().toISOString().slice(0, 10)]);
   const [editCell, setEditCell] = useState<{ rowIndex: number; colKey: keyof T } | null>(null);
   const [editedValue, setEditedValue] = useState<string>('');
+  const [editedRows, setEditedRows] = useState<Set<number>>(new Set());
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (data.length === 0) {
     return <p>Datafel</p>;
   }
 
-  //@ts-ignore
   const headers = Object.keys(data[0]) as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
@@ -70,12 +70,20 @@ function DynamicTable<T>(props: TableProps<T>) {
   };
 
   const applyEdit = () => {
-    if (editCell) {
+    if (editCell && editedValue !== String(data[editCell.rowIndex][editCell.colKey])) {
       const updatedData = [...data];
       updatedData[editCell.rowIndex][editCell.colKey] = editedValue as T[keyof T];
       setEditCell(null);
+
+      setEditedRows(prev => {
+        const newSet = new Set(prev);
+        newSet.add(editCell.rowIndex);
+        return newSet;
+      });
+
       setVisibleRows(applyFilters().slice(0, rowsToShow));
-      console.log("Updated Row:", updatedData[editCell.rowIndex]);
+    } else {
+      setEditCell(null); // Reset if no change
     }
   };
 
@@ -126,9 +134,15 @@ function DynamicTable<T>(props: TableProps<T>) {
           </thead>
           <tbody>
             {visibleRows.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr
+                key={rowIndex}
+                className={editedRows.has(rowIndex) ? 'edited-row' : ''}
+              >
                 {headers.map((header) => (
-                  <td key={String(header)} onClick={() => handleCellClick(rowIndex, header, String(row[header]))}>
+                  <td
+                    key={String(header)}
+                    onClick={() => handleCellClick(rowIndex, header, String(row[header]))}
+                  >
                     {editCell?.rowIndex === rowIndex && editCell?.colKey === header ? (
                       <input
                         className="table-input"

@@ -3,6 +3,10 @@
     margin: 2rem 2rem;
 }
 
+.table tbody tr.edited-row {
+    background-color: lightblue !important;
+}
+
 .table-container {
     width: 100%;
     overflow-x: auto;
