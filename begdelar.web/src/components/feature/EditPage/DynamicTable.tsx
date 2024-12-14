@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './DynamicTable.css';
 
-type TableProps<T> = {
-  data: T[];
+type ValidationRule = {
+  maxLength: number;
 };
 
-function DynamicTable<T>(props: TableProps<T>) {
-  const { data } = props;
+type TableProps<T, V> = {
+  data: T[];
+  validationRules: V;
+};
+
+function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: TableProps<T, V>) {
+  const { data, validationRules } = props;
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
@@ -66,7 +71,14 @@ function DynamicTable<T>(props: TableProps<T>) {
   };
 
   const handleInputChange = (value: string) => {
-    setEditedValue(value);
+    if (editCell) {
+      const maxLength = validationRules[editCell.colKey].maxLength;
+      if (value.length > maxLength) {
+        alert(`Kan inte vara större än ${maxLength} tecken.`);
+        return;
+      }
+      setEditedValue(value);
+    }
   };
 
   const applyEdit = () => {
@@ -83,7 +95,7 @@ function DynamicTable<T>(props: TableProps<T>) {
 
       setVisibleRows(applyFilters().slice(0, rowsToShow));
     } else {
-      setEditCell(null); // Reset if no change
+      setEditCell(null);
     }
   };
 
