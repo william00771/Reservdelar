@@ -21,9 +21,9 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
     '2017-01-01',
     new Date().toISOString().slice(0, 10),
   ]);
-  const [editCell, setEditCell] = useState<{ rowIndex: number; colKey: keyof T } | null>(null);
+  const [editCell, setEditCell] = useState<{ key: string; colKey: keyof T } | null>(null);
   const [editedValue, setEditedValue] = useState<string>('');
-  const [editedRows, setEditedRows] = useState<Set<number>>(new Set());
+  const [editedRows, setEditedRows] = useState<Set<string>>(new Set());
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (currentData.length === 0) {
@@ -70,8 +70,8 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
     return () => container?.removeEventListener('scroll', handleScroll);
   }, [applyFilters().length, rowsToShow]);
 
-  const handleCellClick = (rowIndex: number, colKey: keyof T, currentValue: string) => {
-    setEditCell({ rowIndex, colKey });
+  const handleCellClick = (rowKey: string, colKey: keyof T, currentValue: string) => {
+    setEditCell({ key: rowKey, colKey });
     setEditedValue(currentValue || '');
   };
 
@@ -91,18 +91,14 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
   };
 
   const applyEdit = () => {
-    if (editCell && editedValue !== String(currentData[editCell.rowIndex][editCell.colKey])) {
-      const updatedData = [...currentData];
-      updatedData[editCell.rowIndex][editCell.colKey] = editedValue as T[keyof T];
+    if (editCell && editedValue !== String(currentData.find(row => row.Artnr === editCell.key)?.[editCell.colKey])) {
+      const updatedData = currentData.map(row => 
+        row.Artnr === editCell.key ? { ...row, [editCell.colKey]: editedValue as T[keyof T] } : row
+      );
       setCurrentData(updatedData);
       setEditCell(null);
 
-      setEditedRows(prev => {
-        const newSet = new Set(prev);
-        newSet.add(editCell.rowIndex);
-        return newSet;
-      });
-
+      setEditedRows(prev => new Set([...prev, editCell.key]));
       setVisibleRows(applyFilters().slice(0, rowsToShow));
     } else {
       setEditCell(null);
@@ -166,10 +162,16 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
           </thead>
           <tbody>
             {visibleRows.map((row, rowIndex) => (
-              <tr key={rowIndex} className={editedRows.has(rowIndex) ? 'edited-row' : ''}>
+              <tr
+                key={row.Artnr as string}
+                className={editedRows.has(row.Artnr as string) ? 'edited-row' : ''}
+              >
                 {headers.map((header) => (
-                  <td key={String(header)} onClick={() => handleCellClick(rowIndex, header, String(row[header]))}>
-                    {editCell?.rowIndex === rowIndex && editCell?.colKey === header ? (
+                  <td
+                    key={String(header)}
+                    onClick={() => handleCellClick(row.Artnr as string, header, String(row[header]))}
+                  >
+                    {editCell?.key === row.Artnr && editCell?.colKey === header ? (
                       <input
                         className="table-input"
                         type="text"
