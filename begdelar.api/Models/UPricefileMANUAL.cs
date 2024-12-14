@@ -1,7 +1,8 @@
-﻿namespace begdelar.api.Models
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace begdelar.api.Models
+{
     public class UPricefileManual
     {
         [Required, MaxLength(22)]
@@ -59,6 +60,7 @@
         public string Replcode { get; set; }
 
         [MaxLength(1)]
+        [Column("CORE kat")]
         public string? CoreKat { get; set; }
 
         [MaxLength(1)]
