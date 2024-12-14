@@ -3,6 +3,7 @@ import './DynamicTable.css';
 
 type ValidationRule = {
   maxLength: number;
+  nullable: boolean;
 };
 
 type TableProps<T, V> = {
@@ -72,9 +73,13 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
 
   const handleInputChange = (value: string) => {
     if (editCell) {
-      const maxLength = validationRules[editCell.colKey].maxLength;
+      const { maxLength, nullable } = validationRules[editCell.colKey];
       if (value.length > maxLength) {
         alert(`Kan inte vara större än ${maxLength} tecken.`);
+        return;
+      }
+      if (!nullable && value.length === 0) {
+        alert(`Detta fält får inte vara tomt.`);
         return;
       }
       setEditedValue(value);
