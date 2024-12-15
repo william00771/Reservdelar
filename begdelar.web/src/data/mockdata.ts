@@ -2,6 +2,7 @@ import { UPricefileManual } from "../util/types";
 
 export const UPricefileManualMockData: UPricefileManual[] = [
   {
+    Id: 1,
     Artnr: '950-0574877-1923006',
     descrEng: 'RETARDER',
     Retail: '35000',
@@ -28,6 +29,7 @@ export const UPricefileManualMockData: UPricefileManual[] = [
     DiscountCode: '1',
   },
   {
+    Id: 2,
     Artnr: '950-CR20H-2127017',
     descrEng: 'HYTT-CR20H-1260',
     Retail: '75000',
@@ -54,11 +56,12 @@ export const UPricefileManualMockData: UPricefileManual[] = [
     DiscountCode: '',
   },
   {
+    Id: 3,
     Artnr: '950-0197477',
     descrEng: 'GLÖDLAMPA',
     Retail: '30',
     Export: '30',
-    prg: '279',
+    prg: '0279',
     disccode: 'J4',
     descrLoc: 'GLÖDLAMPA',
     Origin: 'NL',
@@ -68,7 +71,7 @@ export const UPricefileManualMockData: UPricefileManual[] = [
     qtfak2: '001',
     unitType: '',
     ReplacingNo: '0000000000000000000000',
-    Partgrp: '279',
+    Partgrp: '0279',
     statofOrig: '3',
     ArticleGroup: '0',
     replcode: 'N',
@@ -80,6 +83,7 @@ export const UPricefileManualMockData: UPricefileManual[] = [
     DiscountCode: '1',
   },
   ...Array.from({ length: 3200 }, (_, i) => ({
+    Id: i + 4,
     Artnr: `950-ITEM-${i + 1000}`,
     descrEng: `ITEM-DESC-${i + 1}`,
     Retail: `${(i + 1) * 500}`,
@@ -104,5 +108,5 @@ export const UPricefileManualMockData: UPricefileManual[] = [
     supplno: '950',
     validFrom: `2023${(i % 12 + 1).toString().padStart(2, '0')}${(i % 28 + 1).toString().padStart(2, '0')}`,
     DiscountCode: `${(i % 2) + 1}`,
-  }))
+  })),
 ];

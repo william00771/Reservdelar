@@ -11,7 +11,7 @@ type TableProps<T, V> = {
   validationRules: V;
 };
 
-function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: TableProps<T, V>) {
+function DynamicTable<T extends { Id: string }, V extends Record<keyof T, ValidationRule>>(props: TableProps<T, V>) {
   const { data, validationRules } = props;
   const [currentData, setCurrentData] = useState<T[]>([...data]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -30,7 +30,7 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
     return <p>Datafel</p>;
   }
 
-  const headers = Object.keys(currentData[0]) as (keyof T)[];
+  const headers = Object.keys(currentData[0]).filter(header => header !== 'Id') as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
     return dateStr >= dateRange[0] && dateRange[1] >= dateStr;
@@ -91,9 +91,12 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
   };
 
   const applyEdit = () => {
-    if (editCell && editedValue !== String(currentData.find(row => row.Artnr === editCell.key)?.[editCell.colKey])) {
-      const updatedData = currentData.map(row => 
-        row.Artnr === editCell.key ? { ...row, [editCell.colKey]: editedValue as T[keyof T] } : row
+    if (
+      editCell &&
+      editedValue !== String(currentData.find(row => row.Id === editCell.key)?.[editCell.colKey])
+    ) {
+      const updatedData = currentData.map(row =>
+        row.Id === editCell.key ? { ...row, [editCell.colKey]: editedValue as T[keyof T] } : row
       );
       setCurrentData(updatedData);
       setEditCell(null);
@@ -161,17 +164,17 @@ function DynamicTable<T, V extends Record<keyof T, ValidationRule>>(props: Table
             </tr>
           </thead>
           <tbody>
-            {visibleRows.map((row, rowIndex) => (
+            {visibleRows.map((row) => (
               <tr
-                key={row.Artnr as string}
-                className={editedRows.has(row.Artnr as string) ? 'edited-row' : ''}
+                key={row.Id}
+                className={editedRows.has(row.Id) ? 'edited-row' : ''}
               >
                 {headers.map((header) => (
                   <td
                     key={String(header)}
-                    onClick={() => handleCellClick(row.Artnr as string, header, String(row[header]))}
+                    onClick={() => handleCellClick(row.Id, header, String(row[header]))}
                   >
-                    {editCell?.key === row.Artnr && editCell?.colKey === header ? (
+                    {editCell?.key === row.Id && editCell?.colKey === header ? (
                       <input
                         className="table-input"
                         type="text"

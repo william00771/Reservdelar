@@ -1,4 +1,32 @@
 export type UPricefileManual = {
+    Id: number;
+    Artnr: string;
+    descrEng?: string;
+    Retail?: string;
+    Export?: string;
+    prg?: string;
+    disccode?: string;
+    descrLoc?: string;
+    Origin?: string;
+    Wgt?: string;
+    qnt?: string;
+    qtfak1: string;
+    qtfak2: string;
+    unitType: string;
+    ReplacingNo?: string;
+    Partgrp?: string;
+    statofOrig?: string;
+    ArticleGroup?: string;
+    replcode: string;
+    "CORE kat"?: string;
+    CC?: string;
+    custcode?: string;
+    supplno?: string;
+    validFrom?: string;
+    DiscountCode?: string;
+};
+
+export type UPricefileManualResponseDto = {
     Artnr: string;
     descrEng?: string;
     Retail?: string;
@@ -26,6 +54,7 @@ export type UPricefileManual = {
 };
 
 export const UPricefileManualValidationObject: UPricefileManualValidation = {
+    Id: {maxLength: 10, nullable: false},
     Artnr: { maxLength: 22, nullable: false },
     descrEng: { maxLength: 30, nullable: true },
     Retail: { maxLength: 15, nullable: true },
