@@ -5,7 +5,6 @@ import scaniaLogo from "../../icons/logo/scania-symbol.svg";
 import scaniaWordMark from "../../icons/logo/scania-wordmark-white.svg";
 import "./EditPage.css";
 import { getUPricefileManuals } from "../../services/apiEndpoints";
-import { UPricefileManualMockData } from "../../data/mockdata";
 
 export const EditPage = () => {
   const [UPricefileManualData, setUPricefileManualData] = useState<UPricefileManual[]>([]);
@@ -15,12 +14,8 @@ export const EditPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const result = await getUPricefileManuals();
-        // console.log("Fetched Data:", result);
-        // console.log("Mock data:", UPricefileManualMockData);
-        console.log("Object:", result);
-        console.log("ValidationObject", UPricefileManualValidationObject);
-        setUPricefileManualData(result);
+        const UPricefileResponse = await getUPricefileManuals();
+        setUPricefileManualData(UPricefileResponse);
       } catch (err) {
         setError("Failed to fetch data. Please try again.");
         console.error(err);
@@ -47,7 +42,7 @@ export const EditPage = () => {
         <p className="error">{error}</p>
       ) : (
         <DynamicTable 
-          // data={UPricefileManualMockData} 
+          //@ts-ignore
           data={UPricefileManualData}
           validationRules={UPricefileManualValidationObject} 
         />

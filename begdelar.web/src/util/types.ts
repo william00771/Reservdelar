@@ -18,7 +18,7 @@ export type UPricefileManual = {
     statofOrig?: string;
     ArticleGroup?: string;
     replcode: string;
-    "CORE kat"?: string;
+    coreKat?: string;
     CC?: string;
     custcode?: string;
     supplno?: string;
@@ -45,7 +45,7 @@ export type UPricefileManualResponseDto = {
     statofOrig?: string;
     ArticleGroup?: string;
     replcode: string;
-    "CORE kat"?: string;
+    coreKat?: string;
     CC?: string;
     custcode?: string;
     supplno?: string;
@@ -55,6 +55,7 @@ export type UPricefileManualResponseDto = {
 
 export const UPricefileManualValidationObject: UPricefileManualValidation = {
     Id: {maxLength: 10, nullable: false},
+    //@ts-ignore - For the type to find the validationkey the key has to begin with lowercase letter (for some reason)
     artnr: { maxLength: 22, nullable: false },
     descrEng: { maxLength: 30, nullable: true },
     retail: { maxLength: 15, nullable: true },
@@ -73,7 +74,7 @@ export const UPricefileManualValidationObject: UPricefileManualValidation = {
     statofOrig: { maxLength: 1, nullable: true },
     articleGroup: { maxLength: 2, nullable: true },
     replcode: { maxLength: 1, nullable: false },
-    "CORE kat": { maxLength: 1, nullable: true },
+    coreKat: { maxLength: 1, nullable: true },
     cc: { maxLength: 1, nullable: true },
     custcode: { maxLength: 15, nullable: true },
     supplno: { maxLength: 10, nullable: true },

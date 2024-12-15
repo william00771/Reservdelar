@@ -17,10 +17,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
-  const [dateRange, setDateRange] = useState<[string, string]>([
-    '2017-01-01',
-    new Date().toISOString().slice(0, 10),
-  ]);
+  const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', new Date().toISOString().slice(0, 10)]);
   const [editCell, setEditCell] = useState<{ key: string; colKey: keyof T } | null>(null);
   const [editedValue, setEditedValue] = useState<string>('');
   const [editedRows, setEditedRows] = useState<Set<string>>(new Set());
