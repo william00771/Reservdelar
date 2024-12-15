@@ -9,6 +9,11 @@
     display: flex;
     align-items: center;
 }
+.editpage-titlesection:hover h1{
+    cursor: default;
+    opacity: .9;
+    transition: all .3s ease;
+}
     .editpage-titlesection .scaniaWordMark{
         height: 22px;
         width: 135px;
@@ -24,6 +29,7 @@
         text-transform: uppercase;
         opacity: .6;
         font-weight: 400;
+        transition: all .3s ease;
     }
 .editpage-header .scaniaLogo{
     height: 32px;

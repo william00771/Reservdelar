@@ -6,6 +6,7 @@ import scaniaWordMark from "../../icons/logo/scania-wordmark-white.svg";
 import "./EditPage.css";
 import { getUPricefileManuals } from "../../services/apiEndpoints";
 import { ScaniaSpinnerBasic } from "../../components/ui/loaders/ScaniaSpinnerBasic";
+import { ScaniaErrorBasic } from "../../components/ui/alerts/ScaniaErrorBasic";
 
 export const EditPage = () => {
   const [UPricefileManualData, setUPricefileManualData] = useState<UPricefileManual[]>([]);
@@ -18,7 +19,7 @@ export const EditPage = () => {
         const UPricefileResponse = await getUPricefileManuals();
         setUPricefileManualData(UPricefileResponse);
       } catch (err) {
-        setError("Failed to fetch data. Please try again.");
+        setError(`${err}`);
         console.error(err);
       } finally {
         setLoading(false);
@@ -40,7 +41,7 @@ export const EditPage = () => {
       {loading ? (
         <ScaniaSpinnerBasic />
       ) : error ? (
-        <p className="error">{error}</p>
+        <ScaniaErrorBasic errMessage={error}/>
       ) : (
         <DynamicTable 
           //@ts-ignore
