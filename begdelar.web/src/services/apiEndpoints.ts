@@ -11,9 +11,18 @@ export async function getUPricefileManuals(): Promise<UPricefileManual[]> {
 
     const jsonResponse: UPricefileManualResponseDto[] = await response.json();
 
+    const trimObjectValues = <T>(obj: T): T => {
+        return Object.fromEntries(
+            Object.entries(obj).map(([key, value]) => [
+                key, 
+                typeof value === 'string' ? value.replace(/\s+/g, '') : value
+            ])
+        ) as T;
+    };
+
     return jsonResponse.map((item, index) => ({
         Id: index + 1,
-        ...item
+        ...trimObjectValues(item)
     }));
 }
 

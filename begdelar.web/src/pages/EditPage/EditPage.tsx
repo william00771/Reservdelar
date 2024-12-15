@@ -16,8 +16,10 @@ export const EditPage = () => {
     async function fetchData() {
       try {
         const result = await getUPricefileManuals();
-        console.log("Fetched Data:", result);
-        console.log("Mock data:", UPricefileManualMockData);
+        // console.log("Fetched Data:", result);
+        // console.log("Mock data:", UPricefileManualMockData);
+        console.log("Object:", result);
+        console.log("ValidationObject", UPricefileManualValidationObject);
         setUPricefileManualData(result);
       } catch (err) {
         setError("Failed to fetch data. Please try again.");
