@@ -13,12 +13,14 @@ export async function getUPricefileManuals(): Promise<UPricefileManual[]> {
 
     const trimObjectValues = <T>(obj: T): T => {
         return Object.fromEntries(
+            // @ts-ignore
             Object.entries(obj).map(([key, value]) => [
                 key, 
                 typeof value === 'string' ? value.replace(/\s+/g, '') : value
             ])
         ) as T;
     };
+    
 
     return jsonResponse.map((item, index) => ({
         Id: index + 1,

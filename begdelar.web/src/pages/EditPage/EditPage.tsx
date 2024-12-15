@@ -5,6 +5,7 @@ import scaniaLogo from "../../icons/logo/scania-symbol.svg";
 import scaniaWordMark from "../../icons/logo/scania-wordmark-white.svg";
 import "./EditPage.css";
 import { getUPricefileManuals } from "../../services/apiEndpoints";
+import { ScaniaSpinnerBasic } from "../../components/ui/loaders/ScaniaSpinnerBasic";
 
 export const EditPage = () => {
   const [UPricefileManualData, setUPricefileManualData] = useState<UPricefileManual[]>([]);
@@ -37,7 +38,7 @@ export const EditPage = () => {
       </header>
 
       {loading ? (
-        <p>Loading data...</p>
+        <ScaniaSpinnerBasic />
       ) : error ? (
         <p className="error">{error}</p>
       ) : (
