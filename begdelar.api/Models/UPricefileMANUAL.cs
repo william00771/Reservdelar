@@ -6,7 +6,7 @@ namespace begdelar.api.Models
     public class UPricefileManual
     {
         [Required, MaxLength(22)]
-        public string Artnr { get; set; }
+        public required string Artnr { get; set; }
 
         [MaxLength(30)]
         public string? DescrEng { get; set; }
@@ -36,13 +36,13 @@ namespace begdelar.api.Models
         public string? Qnt { get; set; }
 
         [Required, MaxLength(3)]
-        public string Qtfak1 { get; set; }
+        public required string Qtfak1 { get; set; }
 
         [MaxLength(3)]
         public string? Qtfak2 { get; set; }
 
         [Required, MaxLength(4)]
-        public string UnitType { get; set; }
+        public required string UnitType { get; set; }
 
         [MaxLength(22)]
         public string? ReplacingNo { get; set; }
@@ -57,7 +57,7 @@ namespace begdelar.api.Models
         public string? ArticleGroup { get; set; }
 
         [Required, MaxLength(1)]
-        public string Replcode { get; set; }
+        public required string Replcode { get; set; }
 
         [MaxLength(1)]
         [Column("CORE kat")]
