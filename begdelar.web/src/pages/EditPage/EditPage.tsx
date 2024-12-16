@@ -43,11 +43,13 @@ export const EditPage = () => {
       ) : error ? (
         <ScaniaErrorBasic errMessage={error}/>
       ) : (
-        <DynamicTable 
-          //@ts-ignore
-          data={UPricefileManualData}
-          validationRules={UPricefileManualValidationObject} 
-        />
+        <>
+          <DynamicTable 
+            //@ts-ignore
+            data={UPricefileManualData}
+            validationRules={UPricefileManualValidationObject} 
+          />
+        </>
       )}
     </>
   );

@@ -177,6 +177,12 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
           >
           ändrade
           </button>
+          <button
+            className={`toggle-button ${/*showEditedRows ? 'active' : ''*/false}`}
+            // onClick={() => setShowEditedRows(!showEditedRows)}
+          >
+          Nytt fält
+          </button>
         </div>
         <div ref={tableContainerRef} className="table-container">
           <table className="table">
