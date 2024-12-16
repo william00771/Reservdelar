@@ -1,6 +1,6 @@
 import { UPricefileManual, UPricefileManualResponseDto } from "../util/types";
 
-const APIUrl = 'http://localhost:5089'
+const APIUrl = import.meta.env.VITE_API_URL;
 
 export async function getUPricefileManuals(): Promise<UPricefileManual[]> {
     const response = await fetch(`${APIUrl}/UPricefileManual`);
