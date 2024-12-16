@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './DynamicTable.css';
+import { ScaniaErrorBasic } from '../../ui/alerts/ScaniaErrorBasic';
+import { updateUPricefileManuals } from '../../../services/apiEndpoints';
 
 type ValidationRule = {
   maxLength: number;
@@ -24,7 +26,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (currentData.length === 0) {
-    return <p>Datafel</p>;
+    return <ScaniaErrorBasic errMessage='Datafel'/>;
   }
 
   const headers = Object.keys(currentData[0]).filter(header => header !== 'Id') as (keyof T)[];
@@ -115,8 +117,21 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
     window.location.reload();
   };
 
-  const handleSaveChanges = () => {
-    alert('Ändringar sparade');
+  const handleSaveChanges = async () => {
+    const updatedRows = currentData.filter(row => editedRows.has(row.Id));
+  
+    if (updatedRows.length === 0) {
+      alert('Inga ändringar att spara');
+      return;
+    }
+  
+    console.log("PUT Request Object:", updatedRows);
+  
+    try {
+      await updateUPricefileManuals(updatedRows)
+    } catch (err) {
+      alert(`${err}`);
+    }
   };
 
   return (
