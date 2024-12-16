@@ -29,7 +29,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
     return <ScaniaErrorBasic errMessage='Datafel'/>;
   }
 
-  const headers = Object.keys(currentData[0]).filter(header => header !== 'Id') as (keyof T)[];
+  const tableHeaders = Object.keys(currentData[0]).filter(header => header !== 'Id') as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
     return dateStr >= dateRange[0] && dateRange[1] >= dateStr;
@@ -37,11 +37,11 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
 
   const applyFilters = () => {
     const searchFilteredData = currentData.filter(row =>
-      headers.some(header => String(row[header]).toLowerCase().includes(searchTerm.toLowerCase()))
+      tableHeaders.some(header => String(row[header]).toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     const dateFilteredData = searchFilteredData.filter(row =>
-      headers.some(header => isDateInRange(String(row[header])))
+      tableHeaders.some(header => isDateInRange(String(row[header])))
     );
 
     return dateFilteredData;
@@ -125,89 +125,93 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
       return;
     }
   
-    console.log("PUT Request Object:", updatedRows);
-  
     try {
-      await updateUPricefileManuals(updatedRows)
+      //@ts-ignore
+      await updateUPricefileManuals(updatedRows);
+      
     } catch (err) {
       alert(`${err}`);
     }
+
+    alert(`Raderna har uppdaterats!`);
   };
 
   return (
-    <div className="table-wrapper">
-      <div className="menu-wrapper">
-        <input
-          type="text"
-          placeholder="Sök..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setRowsToShow(50);
-          }}
-          className="search-bar"
-        />
-        <input
-          type="date"
-          min="2019-01-01"
-          max="2030-01-01"
-          value={dateRange[0]}
-          onChange={(e) => setDateRange([e.target.value, dateRange[1]])}
-          className="date-input"
-        />
-        <input
-          type="date"
-          min="2019-01-01"
-          max="2030-01-01"
-          value={dateRange[1]}
-          onChange={(e) => setDateRange([dateRange[0], e.target.value])}
-          className="date-input"
-        />
-        <button onClick={handleUndoChanges} className="action-button">Ångra ändringar</button>
-        <button onClick={handleSaveChanges} className="action-button">Spara ändringar</button>
-      </div>
-      <div ref={tableContainerRef} className="table-container">
-        <table className="table">
-          <thead>
-            <tr>
-              {headers.map((header) => (
-                <th key={String(header)}>{String(header)}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {visibleRows.map((row) => (
-              <tr
-                key={row.Id}
-                className={editedRows.has(row.Id) ? 'edited-row' : ''}
-              >
-                {headers.map((header) => (
-                  <td
-                    key={String(header)}
-                    onClick={() => handleCellClick(row.Id, header, String(row[header]))}
-                  >
-                    {editCell?.key === row.Id && editCell?.colKey === header ? (
-                      <input
-                        className="table-input"
-                        type="text"
-                        value={editedValue}
-                        onChange={(e) => handleInputChange(e.target.value)}
-                        onKeyDown={handleInputKeyDown}
-                        onBlur={applyEdit}
-                        autoFocus
-                      />
-                    ) : (
-                      String(row[header]) || <span className="placeholder">NULL</span>
-                    )}
-                  </td>
+    <>
+      <div className="table-wrapper">
+        <div className="menu-wrapper">
+          <input
+            type="text"
+            placeholder="Sök..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setRowsToShow(50);
+            }}
+            className="search-bar"
+          />
+          <input
+            type="date"
+            min="2019-01-01"
+            max="2030-01-01"
+            value={dateRange[0]}
+            onChange={(e) => setDateRange([e.target.value, dateRange[1]])}
+            className="date-input"
+          />
+          <input
+            type="date"
+            min="2019-01-01"
+            max="2030-01-01"
+            value={dateRange[1]}
+            onChange={(e) => setDateRange([dateRange[0], e.target.value])}
+            className="date-input"
+          />
+          <button onClick={handleUndoChanges} className="action-button">Ångra ändringar</button>
+          <button onClick={handleSaveChanges} className="action-button">Spara ändringar</button>
+        </div>
+        <div ref={tableContainerRef} className="table-container">
+          <table className="table">
+            <thead>
+              <tr>
+                {tableHeaders.map((header) => (
+                  <th key={String(header)}>{String(header)}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {visibleRows.map((row) => (
+                <tr
+                  key={row.Id}
+                  className={editedRows.has(row.Id) ? 'edited-row' : ''}
+                >
+                  {tableHeaders.map((header) => (
+                    <td
+                      key={String(header)}
+                      onClick={() => handleCellClick(row.Id, header, String(row[header]))}
+                    >
+                      {editCell?.key === row.Id && editCell?.colKey === header ? (
+                        <input
+                          className="table-input"
+                          type="text"
+                          value={editedValue}
+                          onChange={(e) => handleInputChange(e.target.value)}
+                          onKeyDown={handleInputKeyDown}
+                          onBlur={applyEdit}
+                          autoFocus
+                        />
+                      ) : (
+                        String(row[header]) || <span className="placeholder">NULL</span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="status-bar">{currentData.length.toLocaleString('sv-SE')} rader</div>
       </div>
-      <div className="status-bar">{currentData.length.toLocaleString('sv-SE')} rader</div>
-    </div>
+    </>
   );
 }
 

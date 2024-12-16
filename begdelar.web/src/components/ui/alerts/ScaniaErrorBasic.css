@@ -1,8 +1,8 @@
 .error-information{
     position: absolute;
-    top: 40%;
+    top: 10rem;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%);
     background-color: #0f3263;
     border-top: 5px solid #2b70d3;
 
