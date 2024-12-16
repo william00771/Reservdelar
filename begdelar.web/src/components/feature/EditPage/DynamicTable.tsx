@@ -23,10 +23,11 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const [editCell, setEditCell] = useState<{ key: string; colKey: keyof T } | null>(null);
   const [editedValue, setEditedValue] = useState<string>('');
   const [editedRows, setEditedRows] = useState<Set<string>>(new Set());
+  const [showEditedRows, setShowEditedRows] = useState(false);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   if (currentData.length === 0) {
-    return <ScaniaErrorBasic errMessage='Datafel'/>;
+    return <ScaniaErrorBasic errMessage="Datafel" />;
   }
 
   const tableHeaders = Object.keys(currentData[0]).filter(header => header !== 'Id') as (keyof T)[];
@@ -48,8 +49,11 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   };
 
   useEffect(() => {
-    setVisibleRows(applyFilters().slice(0, rowsToShow));
-  }, [searchTerm, dateRange, rowsToShow, currentData]);
+    const filteredRows = showEditedRows
+      ? currentData.filter(row => editedRows.has(row.Id))
+      : applyFilters();
+    setVisibleRows(filteredRows.slice(0, rowsToShow));
+  }, [searchTerm, dateRange, rowsToShow, currentData, showEditedRows]);
 
   const handleScroll = () => {
     const container = tableContainerRef.current;
@@ -119,16 +123,15 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
 
   const handleSaveChanges = async () => {
     const updatedRows = currentData.filter(row => editedRows.has(row.Id));
-  
+
     if (updatedRows.length === 0) {
       alert('Inga ändringar att spara');
       return;
     }
-  
+
     try {
       //@ts-ignore
       await updateUPricefileManuals(updatedRows);
-      
     } catch (err) {
       alert(`${err}`);
     }
@@ -168,6 +171,12 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
           />
           <button onClick={handleUndoChanges} className="action-button">Ångra ändringar</button>
           <button onClick={handleSaveChanges} className="action-button">Spara ändringar</button>
+          <button
+            className={`toggle-button ${showEditedRows ? 'active' : ''}`}
+            onClick={() => setShowEditedRows(!showEditedRows)}
+          >
+          ändrade
+          </button>
         </div>
         <div ref={tableContainerRef} className="table-container">
           <table className="table">

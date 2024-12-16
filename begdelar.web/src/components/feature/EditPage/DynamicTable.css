@@ -130,3 +130,31 @@
     color: #000;
     opacity: .6;
 }
+
+.toggle-button {
+    width: 6rem;
+    height: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--primary-light);
+    /* background-color: #f4f4f4; */
+    background-color: var(--primary-normal);
+    font-size: .7rem;
+    text-align: center;
+    line-height: 2.2rem;
+    cursor: pointer;
+    font-weight: normal;
+    color: #ddddde;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-button:hover {
+    color: white;
+    border-color: var(--primary-lightest);
+  }
+  
+  .toggle-button.active {
+    background-color: var(--primary-lightest);
+    background-color: var(--primary-normal);
+    background-color: var(--primary-light);
+    color: white;
+  }
