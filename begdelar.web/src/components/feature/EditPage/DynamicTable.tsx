@@ -26,6 +26,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const [editedRows, setEditedRows] = useState<Set<string>>(new Set());
   const [showEditedRows, setShowEditedRows] = useState(false);
   const tableContainerRef = useRef<HTMLDivElement>(null);
+  const [newFieldValues, setNewFieldValues] = useState<Partial<T>>({});
 
   if (currentData.length === 0) {
     return <ScaniaErrorBasic errMessage="Datafel" />;
@@ -139,6 +140,44 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
 
     alert(`Raderna har uppdaterats!`);
   };
+
+
+  const handleNewFieldChange = (field: keyof T, value: string) => {
+    const { maxLength, nullable } = validationRules[field];
+  
+    if (value.length > maxLength) {
+      alert(`Fältet "${String(field)}" får inte vara längre än ${maxLength} tecken.`);
+      return;
+    }
+  
+    if (!nullable && value.trim() === "") {
+      alert(`Fältet "${String(field)}" får inte vara tomt.`);
+      return;
+    }
+  
+    setNewFieldValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+  
+  const handleAddNewField = () => {
+    const missingFields = tableHeaders.filter((header) => {
+      const { nullable } = validationRules[header];
+      const value = newFieldValues[header]?.trim() || "";
+      return !nullable && value === "";
+    });
+  
+    if (missingFields.length > 0) {
+      alert(
+        `Följande fält får inte vara tomma: ${missingFields.join(", ")}`
+      );
+      return;
+    }
+  
+    console.log("Inmatade fältvärden:", newFieldValues);
+  };
+
   return (
     <>
       <div className='newfield-wrapper'>
@@ -146,19 +185,21 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
         <div className='newfield-container'>
           {tableHeaders.map((header) => (
             <input
-                key={header}
-                type="text"
-                placeholder={String(header)}
-                className="newfield-input"
-              />
-            ))}
+              key={header}
+              type="text"
+              placeholder={String(header)}
+              className="newfield-input"
+              value={newFieldValues[header] || ""}
+              onChange={(e) => handleNewFieldChange(header, e.target.value)}
+            />
+          ))}
         </div>
         <button
-            className={`toggle-button ${/*showEditedRows ? 'active' : ''*/false}`}
-            // onClick={() => setShowEditedRows(!showEditedRows)}
-          >
+          className="toggle-button"
+          onClick={handleAddNewField}
+        >
           Lägg in fält
-          </button>
+        </button>
       </div>
       <div className="table-wrapper">
         <div className="menu-wrapper">
