@@ -90,4 +90,11 @@ app.MapPut("/UPricefileManual", async (List<UPricefileMANUALPutRequestDto> updat
     return Results.Ok("Row updated successfully.");
 });
 
+app.MapPost("/UPricefileManual", async (UPricefileManual newRow, AppDbContext db) =>
+{
+    db.UPricefileManuals.Add(newRow);
+    await db.SaveChangesAsync();
+    return Results.Created($"/UPricefileManual/{newRow.Artnr}", newRow);
+});
+
 app.Run();

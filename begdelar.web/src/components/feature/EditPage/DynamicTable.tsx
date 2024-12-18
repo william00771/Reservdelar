@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './DynamicTable.css';
 import { ScaniaErrorBasic } from '../../ui/alerts/ScaniaErrorBasic';
 import { addUPricefileManuals, updateUPricefileManuals } from '../../../services/apiEndpoints';
+import { delay } from '../../../util/utilfunctions';
 
 type ValidationRule = {
   maxLength: number;
@@ -175,10 +176,11 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
       return;
     }
   
-    console.log("Inmatade fältvärden:", newFieldValues);
+    
     try {
       //@ts-ignore
       await addUPricefileManuals(newFieldValues);
+      setNewfieldActive(false);
       alert(`Raden har lagts till!`);
     } catch (err) {
       alert(`${err}`);
