@@ -183,7 +183,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
       setNewfieldActive(false);
       alert(`Raden har lagts till!`);
     } catch (err) {
-      alert(`${err}`);
+      alert(`${err} Kunde inte lägga in fältet.`);
     }
   };
 
@@ -277,10 +277,14 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
                   key={row.Id}
                   className={editedRows.has(row.Id) ? 'edited-row' : ''}
                 >
-                  {tableHeaders.map((header) => (
+                  {tableHeaders.map((header, idx) => (
                     <td
                       key={String(header)}
-                      onClick={() => handleCellClick(row.Id, header, String(row[header]))}
+                      onClick={() => {
+                        if (idx !== 0) {
+                          handleCellClick(row.Id, header, String(row[header]));
+                        }
+                      }}
                     >
                       {editCell?.key === row.Id && editCell?.colKey === header ? (
                         <input

@@ -262,3 +262,7 @@
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
 }
+
+.table tbody tr td:first-child {
+    cursor: default !important;
+}
