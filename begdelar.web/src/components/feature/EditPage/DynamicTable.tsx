@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './DynamicTable.css';
 import { ScaniaErrorBasic } from '../../ui/alerts/ScaniaErrorBasic';
-import { updateUPricefileManuals } from '../../../services/apiEndpoints';
-import NewFieldRow from './NewFieldRow';
+import { addUPricefileManuals, updateUPricefileManuals } from '../../../services/apiEndpoints';
 
 type ValidationRule = {
   maxLength: number;
@@ -26,6 +25,8 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const [editedRows, setEditedRows] = useState<Set<string>>(new Set());
   const [showEditedRows, setShowEditedRows] = useState(false);
   const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  const [newfieldActive, setNewfieldActive] = useState<boolean>(false);
   const [newFieldValues, setNewFieldValues] = useState<Partial<T>>({});
 
   if (currentData.length === 0) {
@@ -134,11 +135,10 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
     try {
       //@ts-ignore
       await updateUPricefileManuals(updatedRows);
+      alert(`Raderna har uppdaterats!`);
     } catch (err) {
       alert(`${err}`);
     }
-
-    alert(`Raderna har uppdaterats!`);
   };
 
 
@@ -161,7 +161,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
     }));
   };
   
-  const handleAddNewField = () => {
+  const handleAddNewField = async () => {
     const missingFields = tableHeaders.filter((header) => {
       const { nullable } = validationRules[header];
       const value = newFieldValues[header]?.trim() || "";
@@ -176,12 +176,20 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
     }
   
     console.log("Inmatade fältvärden:", newFieldValues);
+    try {
+      //@ts-ignore
+      await addUPricefileManuals(newFieldValues);
+      alert(`Raden har lagts till!`);
+    } catch (err) {
+      alert(`${err}`);
+    }
   };
 
   return (
     <>
-      <div className='newfield-wrapper'>
+      <div className={`newfield-wrapper ${!newfieldActive && 'inactive'}`}>
         <h1>Nytt Fält</h1>
+          
         <div className='newfield-container'>
           {tableHeaders.map((header) => (
             <input
@@ -194,12 +202,20 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
             />
           ))}
         </div>
-        <button
-          className="toggle-button"
-          onClick={handleAddNewField}
-        >
-          Lägg in fält
-        </button>
+        <div>
+          <button
+              className="toggle-button close-btn"
+              onClick={() => setNewfieldActive(!newfieldActive)}
+            >
+            Tillbaka
+          </button>
+          <button
+            className="toggle-button"
+            onClick={handleAddNewField}
+          >
+            Lägg till fält
+          </button>
+        </div>
       </div>
       <div className="table-wrapper">
         <div className="menu-wrapper">
@@ -239,7 +255,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
           </button>
           <button
             className={`toggle-button ${/*showEditedRows ? 'active' : ''*/false}`}
-            // onClick={() => setShowEditedRows(!showEditedRows)}
+            onClick={() => setNewfieldActive(!newfieldActive)}
           >
           Nytt fält
           </button>

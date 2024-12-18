@@ -41,3 +41,18 @@ export async function updateUPricefileManuals(updatedRows: UPricefileManual[]): 
         throw new Error("Failed to update UPricefileManual records!");
     }
 }
+
+
+export async function addUPricefileManuals(addRow: UPricefileManual): Promise<void> {
+    const response = await fetch(`${APIUrl}/UPricefileManual`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(addRow)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to add UPricefileManual records!");
+    }
+}

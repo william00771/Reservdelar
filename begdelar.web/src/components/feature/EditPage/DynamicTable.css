@@ -196,12 +196,22 @@
 
 
 .newfield-wrapper{
+    position: relative;
     background-color: var(--primary-normal);
     height: fit-content;
+    /* max-height: 2000px; */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    overflow: hidden;
+
+    transition: all 2s ease;
+}
+.newfield-wrapper.inactive{
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 2s ease;
 }
     .newfield-wrapper h1{
         color: #fff;
@@ -217,10 +227,11 @@
     width: 100%;
     overflow-x: auto;
     font-size: 0.2rem;
-    min-height: 2rem;
+    min-height: fit-content;
     overflow-y: auto;
     background-color: transparent;
     padding: .5rem;
+    overflow: hidden;
 }
 
 .newfield-container {

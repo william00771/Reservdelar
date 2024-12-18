@@ -68,7 +68,7 @@ export const UPricefileManualValidationObject: UPricefileManualValidation = {
     qnt: { maxLength: 5, nullable: true },
     qtfak1: { maxLength: 3, nullable: false },
     qtfak2: { maxLength: 3, nullable: true },
-    unitType: { maxLength: 4, nullable: false },
+    unitType: { maxLength: 4, nullable: true },
     replacingNo: { maxLength: 22, nullable: true },
     partgrp: { maxLength: 4, nullable: true },
     statofOrig: { maxLength: 1, nullable: true },
