@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './DynamicTable.css';
 import { ScaniaErrorBasic } from '../../ui/alerts/ScaniaErrorBasic';
 import { updateUPricefileManuals } from '../../../services/apiEndpoints';
+import NewFieldRow from './NewFieldRow';
 
 type ValidationRule = {
   maxLength: number;
@@ -138,9 +139,27 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
 
     alert(`Raderna har uppdaterats!`);
   };
-
   return (
     <>
+      <div className='newfield-wrapper'>
+        <h1>Nytt Fält</h1>
+        <div className='newfield-container'>
+          {tableHeaders.map((header) => (
+            <input
+                key={header}
+                type="text"
+                placeholder={String(header)}
+                className="newfield-input"
+              />
+            ))}
+        </div>
+        <button
+            className={`toggle-button ${/*showEditedRows ? 'active' : ''*/false}`}
+            // onClick={() => setShowEditedRows(!showEditedRows)}
+          >
+          Lägg in fält
+          </button>
+      </div>
       <div className="table-wrapper">
         <div className="menu-wrapper">
           <input

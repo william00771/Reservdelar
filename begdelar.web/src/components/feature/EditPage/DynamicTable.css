@@ -190,3 +190,64 @@
     .new-field-input:hover{
         cursor: text;
     }
+
+
+
+
+
+.newfield-wrapper{
+    background-color: var(--primary-normal);
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+    .newfield-wrapper h1{
+        color: #fff;
+        font-weight: 400;
+        margin-bottom: 1rem;
+    }
+    .newfield-wrapper .toggle-button{
+        margin: .5rem;
+        background-color: var(--primary-light);
+    }
+
+.newfield-container {
+    width: 100%;
+    overflow-x: auto;
+    font-size: 0.2rem;
+    min-height: 2rem;
+    overflow-y: auto;
+    background-color: transparent;
+    padding: .5rem;
+}
+
+.newfield-container {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+    gap: 1px;
+}
+
+.newfield-input {
+    width: 20%;
+    padding: 4px;
+    font-size: calc(0.4em + 0.5vw);
+    border: 1px solid #ccc;
+    text-align: left;
+    box-sizing: border-box;
+    outline: none;
+    background-color: #ececec;
+    margin: 0 auto;
+}
+
+.newfield-input:hover {
+    background-color: #ffffff;
+    cursor: text;
+}
+
+.newfield-input:focus {
+    border: 1px solid #0019d7;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
+}
