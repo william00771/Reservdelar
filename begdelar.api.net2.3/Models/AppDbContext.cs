@@ -10,7 +10,13 @@ namespace begdelar.api.net2._3.Models
         {
             modelBuilder.Entity<UPricefileManual>()
                 .ToTable("UPricefileMANUAL", "dbo")
-                .HasKey("Artnr");
+                .HasKey(u => new
+                {
+                    u.Artnr,
+                    u.Qtfak1,
+                    u.UnitType,
+                    u.Replcode
+                });
         }
 
         public DbSet<UPricefileManual> UPricefileManuals { get; set; }
