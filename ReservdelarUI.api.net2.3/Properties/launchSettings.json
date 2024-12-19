@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "begdelar.api.net2._3": {
+    "ReservdelarUI.api.net2._3": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

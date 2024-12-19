@@ -1,4 +1,4 @@
-﻿using begdelar.api.net2._3.Models;
+﻿using ReservdelarUI.api.net2._3.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace begdelar.api.net2._0.Controllers
+namespace ReservdelarUI.api.net2._0.Controllers
 {
     [Route("api/[controller]")]
     public class UPricefileManualController : Controller

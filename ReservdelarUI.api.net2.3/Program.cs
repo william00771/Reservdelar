@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace begdelar.api.net2._3
+namespace ReservdelarUI.api.net2._3
 {
     public class Program
     {

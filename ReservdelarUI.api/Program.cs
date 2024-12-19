@@ -1,4 +1,4 @@
-using begdelar.api.Models;
+using ReservdelarUI.api.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

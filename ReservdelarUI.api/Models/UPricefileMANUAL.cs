@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace begdelar.api.Models
+namespace ReservdelarUI.api.Models
 {
     public class UPricefileManual
     {

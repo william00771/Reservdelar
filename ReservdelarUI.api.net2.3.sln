@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.35319.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "begdelar.api.net2.3", "begdelar.api.net2.3\begdelar.api.net2.3.csproj", "{7F95C7F9-F47D-44A2-BC38-4D9864BCC1C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservdelarUI.api.net2.3", "ReservdelarUI.api.net2.3\ReservdelarUI.api.net2.3.csproj", "{7F95C7F9-F47D-44A2-BC38-4D9864BCC1C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

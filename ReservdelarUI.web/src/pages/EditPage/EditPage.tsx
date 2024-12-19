@@ -33,7 +33,7 @@ export const EditPage = () => {
       <header className="editpage-header">
         <div className="editpage-titlesection">
           <img src={scaniaWordMark} alt="scania wordmark" className="scaniaWordMark" />
-          <h1>Begdelar - v1.0</h1>
+          <h1>ReservdelarUI - v1.0</h1>
         </div>
         <img src={scaniaLogo} alt="scania logo" className="scaniaLogo" />
       </header>

@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace begdelar.api.Models
+namespace ReservdelarUI.api.net2._3.Models
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UPricefileManual>()
                 .ToTable("UPricefileMANUAL", "dbo")
-                .HasNoKey();
+                .HasKey("Artnr");
         }
+
         public DbSet<UPricefileManual> UPricefileManuals { get; set; }
     }
 }

@@ -1,11 +1,11 @@
-﻿using begdelar.api.net2._3.Models;
+﻿using ReservdelarUI.api.net2._3.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace begdelar.api.net2._3
+namespace ReservdelarUI.api.net2._3
 {
     public class Startup
     {

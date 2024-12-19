@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace begdelar.api.net2._3.Models
+namespace ReservdelarUI.api.net2._3.Models
 {
-    public class UPricefileManual
+    public class UPricefileMANUALPutRequestDto
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required, MaxLength(22)]
         public string Artnr { get; set; }
 
