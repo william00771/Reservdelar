@@ -19,7 +19,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const [searchTerm, setSearchTerm] = useState('');
   const [visibleRows, setVisibleRows] = useState<T[]>([]);
   const [rowsToShow, setRowsToShow] = useState(50);
-  const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', /*new Date().toISOString().slice(0, 10)*/'2025-01-01']);
+  const [dateRange, setDateRange] = useState<[string, string]>(['2017-01-01', new Date().toISOString().slice(0, 10)/*'2025-01-01'*/]);
   const [editCell, setEditCell] = useState<{ key: string; colKey: keyof T } | null>(null);
   const [editedValue, setEditedValue] = useState<string>('');
   const [editedRows, setEditedRows] = useState<Set<string>>(new Set());
@@ -36,7 +36,8 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
   const tableHeaders = Object.keys(currentData[0]).filter(header => header !== 'Id') as (keyof T)[];
 
   const isDateInRange = (dateStr: string): boolean => {
-    return dateStr >= dateRange[0] && dateRange[1] >= dateStr;
+    const formattedDate = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
+    return formattedDate >= dateRange[0] && formattedDate <= dateRange[1];
   };
 
   const applyFilters = () => {
@@ -258,7 +259,7 @@ function DynamicTable<T extends { Id: string }, V extends Record<keyof T, Valida
           ändrade
           </button>
           <button
-            className={`toggle-button ${/*showEditedRows ? 'active' : ''*/false}`}
+            className={`toggle-button ${false}`}
             onClick={() => setNewfieldActive(!newfieldActive)}
           >
           Nytt fält
